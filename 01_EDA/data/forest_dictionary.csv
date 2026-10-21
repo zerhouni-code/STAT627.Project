@@ -1,0 +1,54 @@
+Label, Definition, Source
+StreetTreePt,UFATrees is the point geometry that represents trees.,"District of Columbia, Department of Transportation"
+SHAPE,Feature geometry. Attribute Domain Values: Unrepresentable Domain: Coordinates defining the features.,ESRI
+OBJECTID,Internal feature number. Attribute Domain Values: Unrepresentable Domain: Sequential unique whole numbers that are automatically generated.,ESRI
+OWNERSHIP,Ownership of tree,"Department of Transportation, Urban Forestry Administration"
+FACILITYID,Unique Tree Identifier,"Department of Transportation, Urban Forestry Administration"
+VICINITY,address in immediate vicinity of the tree,"Department of Transportation, Urban Forestry Administration"
+WARD,Ward,Department of Transportation
+TBOX_L,Tree box length,"Department of Transportation, Urban Forestry Administration"
+TBOX_W,Tree box width,"Department of Transportation, Urban Forestry Administration"
+WIRES,Overhead electrical wires,"Department of Transportation, Urban Forestry Administration"
+CURB,Curb Type,"Department of Transportation, Urban Forestry Administration"
+SIDEWALK,Sidewalk Type,"Department of Transportation, Urban Forestry Administration"
+TBOX_STAT,Plantable status of location,"Department of Transportation, Urban Forestry Administration"
+RETIREDDT,Date of location retirement,"Department of Transportation, Urban Forestry Administration"
+SCI_NM,Scientific Name,"Department of Transportation, Urban Forestry Administration"
+CMMN_NM,Common Name,"Department of Transportation, Urban Forestry Administration"
+DATE_PLANT,most recent planting date of location,"Department of Transportation, Urban Forestry Administration"
+DBH,diameter at breast height (This tree girth is commonly measured at 4.5 feet from the soil surface.),"Department of Transportation, Urban Forestry Administration"
+DISEASE,Observation of tree disease incidence,"Department of Transportation, Urban Forestry Administration"
+PESTS,Observation of tree pest incidence,"Department of Transportation, Urban Forestry Administration"
+CONDITION,Generalized tree health via visual inspection,"Department of Transportation, Urban Forestry Administration"
+CONDITIODT,Most recent date of condition inspection,"Department of Transportation, Urban Forestry Administration"
+TREE_NOTES,Comments,"Department of Transportation, Urban Forestry Administration"
+ONEYEARPHOTO,One Year Photo,"Department of Transportation, Urban Forestry Administration"
+SPECIALPHOTO,Special Photo,"Department of Transportation, Urban Forestry Administration"
+PHOTOREMARKS,Photo Remarks,"Department of Transportation, Urban Forestry Administration"
+ELEVATION,Level of soil at base of tree or in tree box,"Department of Transportation, Urban Forestry Administration"
+SIGN,Type of sign in close proximity to tree,"District of Columbia, Department of Transportation, Urban Forestry Administration"
+TRRS,TRRS,"Department of Transportation, Urban Forestry Administration"
+FAM_NAME,Family Name,DDOT
+CREATED_USER,Created User,DDOT
+CREATED_DATE,Created Date,DDOT
+EDITEDBY,Edited By,DDOT
+LAST_EDITED_USER,Last Edited User,DDOT
+LAST_EDITED_DATE,Last Edited Date,DDOT
+GENUS_NAME,Genus Name,DDOT
+WARRANTY,Planting season when plant warranty began,"Department of Transportation, Urban Forestry Administration"
+SE_ANNO_CAD_DATA, , 
+GLOBALID, , 
+CREATOR,Creator,DDOT
+CREATED,Created Date,DDOT
+EDITOR,Editor,Editor
+EDITED,Edited Date,DDOT
+MBG_WIDTH,"The horizontal measurement of a tree's foliage and branches, usually defined as the average distance between the outermost driplines on opposite sides of the tree. It serves as a key indicator of tree vigor, competitive capacity, and canopy closure in forestry and ecological studies. Measurements are in feet and were derived from 2020 lidar data.","Department of Transportation, Urban Forestry Administration"
+MBG_LENGTH,"The vertical measurement of a tree from the top (highest live foliage) down to the base of the live crown, typically defined as the lowest, non-epicormic, live branch. It represents the active, photosynthetic portion of the tree, indicating its health, vigor, and capacity for growth. Measurements are in feet and were derived from 2020 lidar data.","Department of Transportation, Urban Forestry Administration"
+MBG_ORIENTATION,"The directional, three-dimensional arrangement of a tree's branches and foliage, often indicating asymmetric growth due to light competition, wind (flagging), or slope. It is quantified by measuring the horizontal spread or projection area from the stem in specific cardinal directions, highlighting which side holds the greatest volume or vigor.","Department of Transportation, Urban Forestry Administration"
+MAX_CROWN_HEIGHT,"The vertical distance from the base of the lowest live, sustainable branch to the absolute highest point (apex) of a tree. It represents the total vertical extent of the photosynthetic canopy, excluding dead lower branches, and serves as an indicator of tree vigor, health, and age. Measurements are in feet and were derived from 2020 lidar data.","Department of Transportation, Urban Forestry Administration"
+MAX_MEAN,"The average vertical distance from the base of the live crown (lowest live branches) to the top of the tree, representing the average vertical extent of the foliage across a sample. It indicates tree vigor, shading capability, and competition for light, with larger crowns often signifying better health. Measurements are in feet and were derived from 2020 lidar data.","Department of Transportation, Urban Forestry Administration"
+MIN_CROWN_BASE,"The vertical distance from the ground to the lowest continuous, living branch or foliage whorl on the main stem. It signifies the starting point of the tree's productive canopy, excluding epicormic sprouts and lower, dying branches. Measurements are in feet and were derived from 2020 lidar data.","Department of Transportation, Urban Forestry Administration"
+DTM_MEAN,"Refers to the specific point where the base of a tree’s trunk (the root collar) meets the surrounding ground surface. This measurement serves as the baseline for determining total tree height, typically measured from the ground up to the highest living branch. Measurements are in feet and were derived from 2020 lidar data.","Department of Transportation, Urban Forestry Administration"
+PERIM,"The outermost boundary of a tree's branches and foliage projected onto the ground. It represents the total horizontal width or extent of the canopy, commonly measured by identifying the widest diameter and a second diameter at 90 degrees. Measurements are in feet and were derived from 2020 lidar data.","Department of Transportation, Urban Forestry Administration"
+CROWN_AREA,"The upper, leafy portion of a tree comprising branches, foliage, and reproductive parts extending from the main trunk. As the primary site for photosynthesis, it acts as the interface for light, water, and gas exchange, with its spread often measured to the outer dripline. Measurements are in square feet and were derived from 2020 lidar data.","Department of Transportation, Urban Forestry Administration"
+CICADA_SURVEY,Cicada Survey,"Department of Transportation, Urban Forestry Administration"

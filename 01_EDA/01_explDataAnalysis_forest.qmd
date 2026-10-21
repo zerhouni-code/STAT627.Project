@@ -1,0 +1,188 @@
+---
+title: "Statistical Machine Learning: DC Urban Forestry"
+subtitle: "Exploratory Data Analysis"
+author: "Zak Zerhouni"
+format: 
+  html:
+    theme:
+      light: darkly
+      dark: darkly
+date: today
+---
+
+## Setup
+
+```{r}
+#| output: FALSE
+#| warning: FALSE
+invisible(lapply(c("tidyverse"), library, character.only=TRUE))
+```
+
+```{r}
+forestry.all <- read_csv(file = "data/Urban_Forestry_Street_Trees.csv", col_select = c(-36,-37,-40))
+```
+
+
+### Dictionary
+
+```{r}
+dictionary <- read_csv("data/forest_dictionary.csv")
+```
+
+```{r}
+forestry.all |> select_if(is.numeric) |> colnames()
+```
+
+```{r}
+forestry.all |> select_if(is.numeric) -> forestry.numeric
+```
+
+
+## Variables
+
+### DBH
+
+```{r}
+summary(forestry.all$DBH)
+```
+
+```{r}
+par(mfrow=c(1,2), bg = "gray40")
+hist(forestry.all |> filter(DBH < 100 & DBH > 0) |> pull(DBH),main = "DBH Histogram", xlab = "Diameter at Breast Height", col = "gray60")
+boxplot(forestry.all |> filter(DBH < 100 & DBH > 0) |> pull(DBH),main = "DBH Boxplot", ylab = "Diameter at Breast Height", col = "gray60")
+```
+
+
+
+```{r}
+forestry.all |> filter(DBH < 0)
+```
+
+```{r}
+forestry.all |> filter(DBH > 100) |> select(SCI_NM, DBH)
+```
+
+### MBG Width
+
+```{r}
+par(mfrow=c(1,2), bg = "gray40")
+hist(forestry.all |> pull(MBG_WIDTH),main = "MBG Width Histogram", xlab = "Horizontal Measure of Foliage and Branches", col = "gray60")
+boxplot(forestry.all |> pull(MBG_WIDTH),main = "MBG Width Boxplot", ylab = "Horizontal Measure of Foliage and Branches", pch = "+", col = "gray60")
+```
+
+### MBG Length
+
+```{r}
+par(mfrow=c(1,2), bg = "gray40")
+hist(forestry.all |> pull(MBG_LENGTH),main = "MBG Length Histogram", xlab = "Vertical Measure from top to live crown", col = "gray60")
+boxplot(forestry.all |> pull(MBG_LENGTH),main = "MBG Length Boxplot", ylab = "Vertical Measure from top to live crown", pch = "+", col = "gray60")
+```
+
+### Max Mean
+
+```{r}
+par(mfrow=c(1,2), bg = "gray40")
+hist(forestry.all |> pull(MAX_MEAN),main = "Max Mean Histogram", xlab = "Avg vert dist from base to the live crown", col = "gray60")
+boxplot(forestry.all |> pull(MAX_MEAN),main = "Max Mean Boxplot", ylab = "Avg vert dist from base to the live crown", pch = "+", col = "gray60")
+```
+
+### Max Crown Height
+
+```{r}
+par(mfrow=c(1,2), bg = "gray40")
+hist(forestry.all |> pull(MAX_CROWN_HEIGHT),main = "Max Crown Height Histogram", xlab = "Vert dist from lowest live branch to apex", col = "gray60")
+boxplot(forestry.all |> pull(MAX_CROWN_HEIGHT),main = "Max Crown Height Boxplot", ylab = "Vert dist from lowest live branch to apex", pch = "+", col = "gray60")
+```
+
+
+### TBOX_L
+
+```{r}
+par(mfrow=c(1,2), bg = "gray40")
+hist(forestry.all |> pull(TBOX_L),main = "Max Crown Height Histogram", xlab = "Vert dist from lowest live branch to apex", col = "gray60")
+boxplot(forestry.all |> pull(TBOX_L),main = "Max Crown Height Boxplot", ylab = "Vert dist from lowest live branch to apex", pch = "+", col = "gray60")
+```
+
+## Extreme Value
+
+```{r}
+extreme_value <- forestry.all |> 
+  select(SCI_NM,TBOX_L, GLOBALID, OBJECTID, LAST_EDITED_DATE) |> 
+  arrange(desc(TBOX_L)) |> head(1)
+extreme_value
+```
+
+```{r}
+extreme_value |> kableExtra::kable() |> kableExtra::kable_styling()
+```
+
+## Appendix
+
+### RETIREDDT
+
+This variable basically informs us that there are two separate data sets we should work with. The living trees, and the dead ones.
+
+Only 5452 trees are alive. The rest have been "retired".
+
+```{r}
+livetrees <- forestry.all |> filter(RETIREDDT != "NA")
+nrow(livetrees)
+```
+
+```{r}
+colSums(is.na(forestry.all))
+```
+
+### NA Column Totals
+
+```{r}
+forestry.all |> 
+  summarize(across(everything(), ~sum(is.na(.)))) |> 
+  pivot_longer(cols = everything(), 
+               names_to = "variable", values_to = "value") |>
+  filter(value > 100000)
+```
+
+
+```{r}
+colSums(is.na(forestry.all))
+```
+
+
+
+```{r}
+forestry.numeric |> select(MBG_WIDTH, MBG_LENGTH) -> forestry.pairs
+cor(forestry.pairs)
+```
+
+
+```{r}
+par( bg="gray40", col="gray10")
+plot(forestry.all$X, forestry.all$Y, pch="+")
+```
+
+
+
+### New Variable: Longevity
+
+```{r}
+colnames(forestry.all)
+```
+
+```{r}
+forestry.all %>%
+  summarise(across(everything(), ~ sum(is.na(.))))
+```
+
+We may have to just use the subset of trees that have a created date, and then see when they died to create a new variable such as longevity.
+
+```{r}
+forestry.all |> select(CREATED_DATE) |> distinct()
+```
+
+```{r}
+
+```
+
+
+This variable must exclude the live trees. We don't know how long they will live for because they're still alive.
