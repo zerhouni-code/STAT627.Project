@@ -22,10 +22,10 @@ invisible(lapply(c("tidyverse"), library, character.only=TRUE))
 forestry.all <- read_csv(file = "data/Urban_Forestry_Street_Trees.csv", col_select = c(-36,-37,-40))
 ```
 
-
 ### Dictionary
 
 ```{r}
+# Definitions of variables
 dictionary <- read_csv("data/forest_dictionary.csv")
 ```
 
@@ -37,12 +37,12 @@ forestry.all |> select_if(is.numeric) |> colnames()
 forestry.all |> select_if(is.numeric) -> forestry.numeric
 ```
 
-
 ## Variables
 
 ### DBH
 
 ```{r}
+# Diamteter at breast height
 summary(forestry.all$DBH)
 ```
 
@@ -51,8 +51,6 @@ par(mfrow=c(1,2), bg = "gray40")
 hist(forestry.all |> filter(DBH < 100 & DBH > 0) |> pull(DBH),main = "DBH Histogram", xlab = "Diameter at Breast Height", col = "gray60")
 boxplot(forestry.all |> filter(DBH < 100 & DBH > 0) |> pull(DBH),main = "DBH Boxplot", ylab = "Diameter at Breast Height", col = "gray60")
 ```
-
-
 
 ```{r}
 forestry.all |> filter(DBH < 0)
@@ -65,6 +63,8 @@ forestry.all |> filter(DBH > 100) |> select(SCI_NM, DBH)
 ### MBG Width
 
 ```{r}
+# MBG - The horizontal measurement of a tree's foliage and branches, usually defined as the average distance between the outermost driplines on opposite sides of the tree. It serves as a key indicator of tree vigor, competitive capacity, and canopy closure in forestry and ecological studies. Measurements are in feet and were derived from 2020 lidar data.
+
 par(mfrow=c(1,2), bg = "gray40")
 hist(forestry.all |> pull(MBG_WIDTH),main = "MBG Width Histogram", xlab = "Horizontal Measure of Foliage and Branches", col = "gray60")
 boxplot(forestry.all |> pull(MBG_WIDTH),main = "MBG Width Boxplot", ylab = "Horizontal Measure of Foliage and Branches", pch = "+", col = "gray60")
@@ -73,6 +73,8 @@ boxplot(forestry.all |> pull(MBG_WIDTH),main = "MBG Width Boxplot", ylab = "Hori
 ### MBG Length
 
 ```{r}
+# The vertical measurement of a tree from the top (highest live foliage) down to the base of the live crown, typically defined as the lowest, non-epicormic, live branch. It represents the active, photosynthetic portion of the tree, indicating its health, vigor, and capacity for growth. Measurements are in feet and were derived from 2020 lidar data.
+
 par(mfrow=c(1,2), bg = "gray40")
 hist(forestry.all |> pull(MBG_LENGTH),main = "MBG Length Histogram", xlab = "Vertical Measure from top to live crown", col = "gray60")
 boxplot(forestry.all |> pull(MBG_LENGTH),main = "MBG Length Boxplot", ylab = "Vertical Measure from top to live crown", pch = "+", col = "gray60")
@@ -94,10 +96,10 @@ hist(forestry.all |> pull(MAX_CROWN_HEIGHT),main = "Max Crown Height Histogram",
 boxplot(forestry.all |> pull(MAX_CROWN_HEIGHT),main = "Max Crown Height Boxplot", ylab = "Vert dist from lowest live branch to apex", pch = "+", col = "gray60")
 ```
 
-
 ### TBOX_L
 
 ```{r}
+# Tree box length
 par(mfrow=c(1,2), bg = "gray40")
 hist(forestry.all |> pull(TBOX_L),main = "Max Crown Height Histogram", xlab = "Vert dist from lowest live branch to apex", col = "gray60")
 boxplot(forestry.all |> pull(TBOX_L),main = "Max Crown Height Boxplot", ylab = "Vert dist from lowest live branch to apex", pch = "+", col = "gray60")
@@ -143,25 +145,19 @@ forestry.all |>
   filter(value > 100000)
 ```
 
-
 ```{r}
 colSums(is.na(forestry.all))
 ```
-
-
 
 ```{r}
 forestry.numeric |> select(MBG_WIDTH, MBG_LENGTH) -> forestry.pairs
 cor(forestry.pairs)
 ```
 
-
 ```{r}
 par( bg="gray40", col="gray10")
 plot(forestry.all$X, forestry.all$Y, pch="+")
 ```
-
-
 
 ### New Variable: Longevity
 
@@ -184,5 +180,43 @@ forestry.all |> select(CREATED_DATE) |> distinct()
 
 ```
 
-
 This variable must exclude the live trees. We don't know how long they will live for because they're still alive.
+
+## Potential Variables of interest
+
+Could measure CONDITION (categorical variable) with the numerical predictors of DBH, TBOX_L, TBOX_W, MBG_WIDTH\*, and MAX_CROWN_HEIGHT.
+
+Potential logistic regression, where we split condition into "good" or "bad," and then we can estimate the probability of a tree being that way.
+
+```{r}
+y <- "CONDITION"
+num_vars <- c("DBH", "TBOX_L", "TBOX_W", "MBG_WIDTH", "MAX_CROWN_HEIGHT")
+cat_vars <- c("GENUS_NAME", "WARD", "WIRES", "CURB", "SIDEWALK")
+
+# where are NAs
+
+forestry.all |> 
+  select(all_of(c(y, num_vars, cat_vars))) |> 
+  summarise(across(everything(), ~ round(100 * mean(is.na(.x) | .x == ""), 1))) |> 
+  pivot_longer(everything(), names_to = "variable", values_to = "pct_missing") |> 
+  arrange(desc(pct_missing)) |> 
+  print()
+
+# potential predictors (numericals)
+summary(forestry.all[num_vars])
+
+forestry.all |> 
+  select(all_of(num_vars)) |> 
+  pivot_longer(everything()) |> 
+  ggplot(aes(value)) +
+  geom_histogram(bins = 40, na.rm = TRUE) +
+  facet_wrap(~name, scales = "free") +
+  theme_minimal()
+
+# collinearity check
+cor_mat <- cor(forestry.all[num_vars], use = "pairwise.complete.obs")
+round(cor_mat, 2)
+heatmap(cor_mat, symm = TRUE)
+
+# There's some concern with the MBG_WIDTH, but not about .6 on the correlation matrix with any other variables.
+```
